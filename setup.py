@@ -33,7 +33,8 @@ setup(
     # test_suite='test_flask_avatars',
     include_package_data=True,
     install_requires=[
-        'Flask'
+        'Flask',
+        'Pillow'
     ],
     keywords='flask extension development',
     classifiers=[
