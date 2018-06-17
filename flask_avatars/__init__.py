@@ -13,16 +13,19 @@ class _Avatars(object):
 
     @staticmethod
     def gravatar(hash, size=100, rating='g', default='identicon', include_extension=False, force_default=False):
-        """
-        You can get hash like this::
+        """Pass email hash, return Gravatar URL. You can get email hash like this::
+
             import hashlib
+            avatar_hash = hashlib.md5(email.lower().encode('utf-8')).hexdigest()
 
-            avatar_hash = hashlib.md5(email.lower()).hexdigest()
-        :param hash
-        :param size
-        :param rating
-        :param default
+        Visit `https://en.gravatar.com/site/implement/images/`_ for more information.
 
+        :param hash: The email hash used to generate avatar URL.
+        :param size: The size of the avatar, default to 100 pixel.
+        :param rating: The rating of the avatar, default to ``g``
+        :param default: The type of default avatar, default to ``identicon``.
+        :param include_extension: Append a '.jpg' extension at the end of URL, default to ``False``.
+        :param force_default: Force to use default avatar, default to ``False``.
         """
         if include_extension:
             hash += '.jpg'
@@ -36,25 +39,40 @@ class _Avatars(object):
 
     @staticmethod
     def robohash(text, size=200):
+        """Pass text, return Robohash-style avatar (robot).
+        Visit `https://robohash.org/`_ for more information.
+
+        :param text: The text used to generate avatar.
+        :param size: The size of the avatar, default to 200 pixel.
+        """
         return 'https://robohash.org/{text}?size={size}x{size}'.format(text=text, size=size)
 
     @staticmethod
     def social_media(username, platform='twitter', size='medium'):
-        """
-        facebook, instagram, twitter, gravatar
+        """Return avatar URL at social media.
+        Visit `https://avatars.io`_ for more information.
+
+        :param username: The username of the social media.
+        :param platform: One of facebook, instagram, twitter, gravatar.
+        :param size: The size of avatar, one of small, medium and large.
         """
         return 'https://avatars.io/{platform}/{username}/{size}'.format(platform=platform, username=username, size=size)
 
     @staticmethod
     def default(size='m'):
+        """Return built-in default avatar.
+
+        :param size: The size of avatar, one of s, m, l.
+        :return: Default avatar URL
+        """
         return url_for('avatars.static', filename='default/default_{size}.jpg'.format(size=size))
 
     @staticmethod
     def jcrop_css(css_url=None):
-        crop_size = current_app.config['AVATARS_CROP_BASE_WIDTH']
-        preview_size = current_app.config['AVATARS_CROP_PREVIEW_SIZE'] \
-                       or current_app.config['AVATARS_SIZE_TUPLE'][2]
+        """Load jcrop css file.
 
+        :param css_url: The custom CSS URL.
+        """
         if css_url is None:
             if current_app.config['AVATARS_SERVE_LOCAL'] or os.getenv('FLASK_ENV') == 'development':
                 css_url = url_for('avatars.static', filename='css/jquery.Jcrop.min.css')
@@ -64,6 +82,11 @@ class _Avatars(object):
 
     @staticmethod
     def jcrop_js(js_url=None, with_jquery=False):
+        """Load jcrop Javascript file.
+
+        :param js_url: The custom JavaScript URL.
+        :param with_jquery: Include jQuery or not, default to ``False``.
+        """
         if js_url is None:
             if current_app.config['AVATARS_SERVE_LOCAL'] or os.getenv('FLASK_ENV') == 'development':
                 js_url = url_for('avatars.static', filename='js/jquery.Jcrop.min.js')
@@ -82,6 +105,11 @@ class _Avatars(object):
 
     @staticmethod
     def crop_box(endpoint=None, filename=None):
+        """Create a crop box.
+
+        :param endpoint: The endpoint of view function that serve avatar image file.
+        :param filename: The filename of the image that need to be crop.
+        """
         crop_size = current_app.config['AVATARS_CROP_BASE_WIDTH']
 
         if endpoint is None or filename is None:
@@ -92,6 +120,11 @@ class _Avatars(object):
 
     @staticmethod
     def preview_box(endpoint=None, filename=None):
+        """Create a preview box.
+
+        :param endpoint: The endpoint of view function that serve avatar image file.
+        :param filename: The filename of the image that need to be crop.
+        """
         preview_size = current_app.config['AVATARS_CROP_PREVIEW_SIZE'] \
                        or current_app.config['AVATARS_SIZE_TUPLE'][2]
 
@@ -108,6 +141,10 @@ class _Avatars(object):
 
     @staticmethod
     def init_jcrop(min_size=None):
+        """Initialize jcrop.
+
+        :param min_size: The minimal size of crop area.
+        """
         init_x = current_app.config['AVATARS_CROP_INIT_POS'][0]
         init_y = current_app.config['AVATARS_CROP_INIT_POS'][1]
         init_size = current_app.config['AVATARS_CROP_INIT_SIZE'] \
@@ -211,11 +248,11 @@ class Avatars(object):
         app.config.setdefault('AVATARS_CROP_PREVIEW_SIZE', None)
         app.config.setdefault('AVATARS_CROP_MIN_SIZE', None)
 
-    #        @blueprint.route('/%s/<path:filename>/<size>' % app.config['AVATARS_STATIC_PREFIX'])
-    #        def static(filename_m):
-    #            path = current_app.config['AVATARS_UPLOAD_PATH']
-    #            filename = '%s_%s.png' % (filename, size)
-    #            return send_from_directory(path, filename)
+        # @blueprint.route('/%s/<path:filename>/<size>' % app.config['AVATARS_STATIC_PREFIX'])
+        # def static(filename_m):
+        #     path = current_app.config['AVATARS_UPLOAD_PATH']
+        #     filename = '%s_%s.png' % (filename, size)
+        #     return send_from_directory(path, filename)
 
     @staticmethod
     def context_processor():
@@ -224,18 +261,35 @@ class Avatars(object):
         }
 
     def resize_avatar(self, img, base_width):
+        """Resize an avatar.
+
+        :param img: The image that needs to be resize.
+        :param base_width: The width of output image.
+        """
         w_percent = (base_width / float(img.size[0]))
         h_size = int((float(img.size[1]) * float(w_percent)))
         img = img.resize((base_width, h_size), PIL.Image.ANTIALIAS)
         return img
 
     def save_avatar(self, image):
+        """Save an avatar as raw image, return new filename.
+
+        :param image: The image that needs to be saved.
+        """
         path = current_app.config['AVATARS_UPLOAD_PATH']
         filename = uuid4().hex + '_raw.png'
         image.save(os.path.join(path, filename))
         return filename
 
     def crop_avatar(self, filename, x, y, w, h):
+        """Crop avatar with given size, return a list of file name: [filename_s, filename_m, filename_l].
+
+        :param filename: The raw image's filename.
+        :param x: The x-pos to start crop.
+        :param y: The y-pos to start crop.
+        :param w: The crop width.
+        :param h: The crop height.
+        """
         x = int(x)
         y = int(y)
         w = int(w)
