@@ -325,3 +325,19 @@ class Avatars(object):
         avatar_l.save(path_l, optimize=True, quality=85)
 
         return [filename_s, filename_m, filename_l]
+
+    @staticmethod
+    def gravatar(**kwargs):
+        return _Avatars.gravatar(**kwargs)
+
+    @staticmethod
+    def robohash(**kwargs):
+        return _Avatars.robohash(**kwargs)
+
+    @staticmethod
+    def social_media(**kwargs):
+        return _Avatars.social_media(**kwargs)
+
+    @staticmethod
+    def default(**kwargs):
+        return _Avatars.default(**kwargs)
