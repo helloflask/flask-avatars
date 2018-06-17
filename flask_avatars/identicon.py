@@ -1,7 +1,8 @@
 """
-Based on randomavatar(https://pypi.org/project/randomavatar/).
-
-
+    flask_avatars.identicon
+    ~~~~~~~~~~~~~~~~~~~~~~~~
+    Generate identicon image.
+    Based on randomavatar(https://pypi.org/project/randomavatar/).
 """
 import hashlib
 import math
@@ -17,11 +18,12 @@ class Identicon(object):
 
     def __init__(self, rows=None, cols=None, bg_color=None):
 
-        """
+        """Generate identicon image.
 
-        :param rows:
-        :param columns:
-        :param bg_color: RGB tuple or 'random'
+        :param rows: The row of pixels in avatar.
+        :param columns: The column of pixels in avatar.
+        :param bg_color: Backgroud color, pass RGB tuple, for example: (125, 125, 125).
+        Set it to ``None`` to use random color.
         """
 
         self.rows = rows or current_app.config['AVATARS_IDENTICON_ROWS']
@@ -193,6 +195,10 @@ class Identicon(object):
         return matrix
 
     def generate(self, text):
+        """Generate and save avatars, return a list of file name: [filename_s, filename_m, filename_l].
+
+        :param text: The text used to generate image.
+        """
         sizes = current_app.config['AVATARS_SIZE_TUPLE']
         path = current_app.config['AVATARS_UPLOAD_PATH']
         suffix = {sizes[0]: 's', sizes[1]: 'm', sizes[2]: 'l'}
