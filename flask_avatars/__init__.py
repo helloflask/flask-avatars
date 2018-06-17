@@ -1,0 +1,273 @@
+# -*- coding: utf-8 -*-
+import os
+import urllib
+from uuid import uuid4
+
+import PIL
+from PIL import Image
+from flask import current_app, Blueprint, url_for, Markup
+from .identicon import Identicon
+
+
+class _Avatars(object):
+
+    @staticmethod
+    def gravatar(hash, size=100, rating='g', default='identicon', include_extension=False, force_default=False):
+        """
+        You can get hash like this::
+            import hashlib
+
+            avatar_hash = hashlib.md5(email.lower()).hexdigest()
+        :param hash
+        :param size
+        :param rating
+        :param default
+
+        """
+        if include_extension:
+            hash += '.jpg'
+
+        default = default or current_app.config['AVATARS_GRAVATAR_DEFAULT']
+        query_string = urllib.urlencode({'s': int(size), 'r': rating, 'd': default})
+
+        if force_default:
+            query_string += '&q=y'
+        return 'https://gravatar.com/avatar/' + hash + '?' + query_string
+
+    @staticmethod
+    def robohash(text, size=200):
+        return 'https://robohash.org/{text}?size={size}x{size}'.format(text=text, size=size)
+
+    @staticmethod
+    def social_media(username, platform='twitter', size='medium'):
+        """
+        facebook, instagram, twitter, gravatar
+        """
+        return 'https://avatars.io/{platform}/{username}/{size}'.format(platform=platform, username=username, size=size)
+
+    @staticmethod
+    def default(size='m'):
+        return url_for('avatars.static', filename='default/default_{size}.jpg'.format(size=size))
+
+    @staticmethod
+    def jcrop_css(css_url=None):
+        crop_size = current_app.config['AVATARS_CROP_BASE_WIDTH']
+        preview_size = current_app.config['AVATARS_CROP_PREVIEW_SIZE'] \
+                       or current_app.config['AVATARS_SIZE_TUPLE'][2]
+
+        if css_url is None:
+            if current_app.config['AVATARS_SERVE_LOCAL'] or os.getenv('FLASK_ENV') == 'development':
+                css_url = url_for('avatars.static', filename='css/jquery.Jcrop.min.css')
+            else:
+                css_url = 'http://jcrop-cdn.tapmodo.com/v0.9.12/css/jquery.Jcrop.min.css'
+        return Markup('<link rel="stylesheet" href="%s">' % css_url)
+
+    @staticmethod
+    def jcrop_js(js_url=None, with_jquery=False):
+        if js_url is None:
+            if current_app.config['AVATARS_SERVE_LOCAL'] or os.getenv('FLASK_ENV') == 'development':
+                js_url = url_for('avatars.static', filename='js/jquery.Jcrop.min.js')
+            else:
+                js_url = 'http://jcrop-cdn.tapmodo.com/v0.9.12/js/jquery.Jcrop.min.js'
+
+        if with_jquery:
+            if current_app.config['AVATARS_SERVE_LOCAL']:
+                jquery = url_for('avatars.static', filename='js/jquery.min.js')
+            else:
+                jquery = '<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>'
+        else:
+            jquery = ''
+        return Markup('''%s\n<script src="%s"></script>
+        ''' % (jquery, js_url))
+
+    @staticmethod
+    def crop_box(endpoint=None, filename=None):
+        crop_size = current_app.config['AVATARS_CROP_BASE_WIDTH']
+
+        if endpoint is None or filename is None:
+            url = url_for('avatars.static', filename='default/default_l.jpg')
+        else:
+            url = url_for(endpoint, filename=filename, size='raw')
+        return Markup('<img src="%s" id="crop-box" style="max-width: %dpx; display: block;">' % (url, crop_size))
+
+    @staticmethod
+    def preview_box(endpoint=None, filename=None):
+        preview_size = current_app.config['AVATARS_CROP_PREVIEW_SIZE'] \
+                       or current_app.config['AVATARS_SIZE_TUPLE'][2]
+
+        if endpoint is None or filename is None:
+            url = url_for('avatars.static', filename='default/default_l.jpg')
+        else:
+            url = url_for(endpoint, filename=filename, size='raw')
+        return Markup('''
+        <div id="preview-box">
+        <div class="preview-box" style="width: %dpx; height: %dpx; overflow: hidden;">
+          <img src="%s" class="jcrop-preview" alt="Preview"/>
+        </div>
+      </div>''' % (preview_size, preview_size, url))
+
+    @staticmethod
+    def init_jcrop(min_size=None):
+        init_x = current_app.config['AVATARS_CROP_INIT_POS'][0]
+        init_y = current_app.config['AVATARS_CROP_INIT_POS'][1]
+        init_size = current_app.config['AVATARS_CROP_INIT_SIZE'] \
+                    or current_app.config['AVATARS_SIZE_TUPLE'][2]
+
+        if current_app.config['AVATARS_CROP_MIN_SIZE']:
+            min_size = min_size or current_app.config['AVATARS_SIZE_TUPLE'][2]
+            min_size_js = 'jcrop_api.setOptions({minSize: [%d, %d]});' % (min_size, min_size)
+        else:
+            min_size_js = ''
+        return Markup('''
+<script type="text/javascript">
+    jQuery(function ($) {
+      // Create variables (in this scope) to hold the API and image size
+      var jcrop_api,
+          boundx,
+          boundy,
+
+          // Grab some information about the preview pane
+          $preview = $('#preview-box'),
+          $pcnt = $('#preview-box .preview-box'),
+          $pimg = $('#preview-box .preview-box img'),
+
+          xsize = $pcnt.width(),
+          ysize = $pcnt.height();
+
+      $('#crop-box').Jcrop({
+        onChange: updatePreview,
+        onSelect: updateCoords,
+        setSelect: [%s, %s, %s, %s],
+        aspectRatio: 1
+      }, function () {
+        // Use the API to get the real image size
+        var bounds = this.getBounds();
+        boundx = bounds[0];
+        boundy = bounds[1];
+        // Store the API in the jcrop_api variable
+        jcrop_api = this;
+        %s
+        jcrop_api.focus();
+        // Move the preview into the jcrop container for css positioning
+        $preview.appendTo(jcrop_api.ui.holder);
+      });
+
+      function updatePreview(c) {
+        if (parseInt(c.w) > 0) {
+          var rx = xsize / c.w;
+          var ry = ysize / c.h;
+          $pimg.css({
+            width: Math.round(rx * boundx) + 'px',
+            height: Math.round(ry * boundy) + 'px',
+            marginLeft: '-' + Math.round(rx * c.x) + 'px',
+            marginTop: '-' + Math.round(ry * c.y) + 'px'
+          });
+        }
+      }
+    });
+
+    function updateCoords(c) {
+      $('#x').val(c.x);
+      $('#y').val(c.y);
+      $('#w').val(c.w);
+      $('#h').val(c.h);
+    }
+  </script>
+            ''' % (init_x, init_y, init_size, init_size, min_size_js))
+
+
+class Avatars(object):
+    def __init__(self, app=None):
+        if app is not None:
+            self.init_app(app)
+
+    def init_app(self, app):
+        if not hasattr(app, 'extensions'):
+            app.extensions = {}
+        app.extensions['avatars'] = _Avatars
+        app.context_processor(self.context_processor)
+
+        blueprint = Blueprint('avatars', __name__,
+                              static_folder='static',
+                              static_url_path='/avatars/static')
+        app.register_blueprint(blueprint)
+
+        # TODO: custom file extension support
+        # settings
+        app.config.setdefault('AVATARS_GRAVATAR_DEFAULT', 'identicon')
+
+        app.config.setdefault('AVATARS_SERVE_LOCAL', False)
+
+        app.config.setdefault('AVATARS_UPLOAD_PATH', None)
+        app.config.setdefault('AVATARS_SIZE_TUPLE', (30, 60, 150))
+        # Identicon
+        app.config.setdefault('AVATARS_IDENTICON_COLS', 7)
+        app.config.setdefault('AVATARS_IDENTICON_ROWS', 7)
+        app.config.setdefault('AVATARS_IDENTICON_BG', None)
+        # Jcrop
+        app.config.setdefault('AVATARS_CROP_BASE_WIDTH', 500)
+        app.config.setdefault('AVATARS_CROP_INIT_POS', (0, 0))
+        app.config.setdefault('AVATARS_CROP_INIT_SIZE', None)
+        app.config.setdefault('AVATARS_CROP_PREVIEW_SIZE', None)
+        app.config.setdefault('AVATARS_CROP_MIN_SIZE', None)
+
+    #        @blueprint.route('/%s/<path:filename>/<size>' % app.config['AVATARS_STATIC_PREFIX'])
+    #        def static(filename_m):
+    #            path = current_app.config['AVATARS_UPLOAD_PATH']
+    #            filename = '%s_%s.png' % (filename, size)
+    #            return send_from_directory(path, filename)
+
+    @staticmethod
+    def context_processor():
+        return {
+            'avatars': current_app.extensions['avatars']
+        }
+
+    def resize_avatar(self, img, base_width):
+        w_percent = (base_width / float(img.size[0]))
+        h_size = int((float(img.size[1]) * float(w_percent)))
+        img = img.resize((base_width, h_size), PIL.Image.ANTIALIAS)
+        return img
+
+    def save_avatar(self, image):
+        path = current_app.config['AVATARS_UPLOAD_PATH']
+        filename = uuid4().hex + '_raw.png'
+        image.save(os.path.join(path, filename))
+        return filename
+
+    def crop_avatar(self, filename, x, y, w, h):
+        x = int(x)
+        y = int(y)
+        w = int(w)
+        h = int(h)
+
+        sizes = current_app.config['AVATARS_SIZE_TUPLE']
+        path = os.path.join(current_app.config['AVATARS_UPLOAD_PATH'], filename)
+        raw_img = Image.open(path)
+
+        base_width = current_app.config['AVATARS_CROP_BASE_WIDTH']
+
+        if raw_img.size[0] >= base_width:
+            raw_img = self.resize_avatar(raw_img, base_width=base_width)
+
+        cropped_img = raw_img.crop((x, y, x + w, y + h))
+
+        filename = uuid4().hex
+
+        avatar_s = self.resize_avatar(cropped_img, base_width=sizes[0])
+        avatar_m = self.resize_avatar(cropped_img, base_width=sizes[1])
+        avatar_l = self.resize_avatar(cropped_img, base_width=sizes[2])
+
+        filename_s = filename + '_s.png'
+        filename_m = filename + '_m.png'
+        filename_l = filename + '_l.png'
+
+        path_s = os.path.join(current_app.config['AVATARS_UPLOAD_PATH'], filename_s)
+        path_m = os.path.join(current_app.config['AVATARS_UPLOAD_PATH'], filename_m)
+        path_l = os.path.join(current_app.config['AVATARS_UPLOAD_PATH'], filename_l)
+
+        avatar_s.save(path_s, optimize=True, quality=85)
+        avatar_m.save(path_m, optimize=True, quality=85)
+        avatar_l.save(path_l, optimize=True, quality=85)
+
+        return [filename_s, filename_m, filename_l]
