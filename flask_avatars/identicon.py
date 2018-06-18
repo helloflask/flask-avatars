@@ -201,7 +201,7 @@ class Identicon(object):
         :param text: The text used to generate image.
         """
         sizes = current_app.config['AVATARS_SIZE_TUPLE']
-        path = current_app.config['AVATARS_UPLOAD_PATH']
+        path = current_app.config['AVATARS_SAVE_PATH']
         suffix = {sizes[0]: 's', sizes[1]: 'm', sizes[2]: 'l'}
 
         for size in sizes:

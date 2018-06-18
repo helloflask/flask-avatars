@@ -235,7 +235,7 @@ class Avatars(object):
 
         app.config.setdefault('AVATARS_SERVE_LOCAL', False)
 
-        app.config.setdefault('AVATARS_UPLOAD_PATH', None)
+        app.config.setdefault('AVATARS_SAVE_PATH', None)
         app.config.setdefault('AVATARS_SIZE_TUPLE', (30, 60, 150))
         # Identicon
         app.config.setdefault('AVATARS_IDENTICON_COLS', 7)
@@ -250,7 +250,7 @@ class Avatars(object):
 
         # @blueprint.route('/%s/<path:filename>/<size>' % app.config['AVATARS_STATIC_PREFIX'])
         # def static(filename_m):
-        #     path = current_app.config['AVATARS_UPLOAD_PATH']
+        #     path = current_app.config['AVATARS_SAVE_PATH']
         #     filename = '%s_%s.png' % (filename, size)
         #     return send_from_directory(path, filename)
 
@@ -276,7 +276,7 @@ class Avatars(object):
 
         :param image: The image that needs to be saved.
         """
-        path = current_app.config['AVATARS_UPLOAD_PATH']
+        path = current_app.config['AVATARS_SAVE_PATH']
         filename = uuid4().hex + '_raw.png'
         image.save(os.path.join(path, filename))
         return filename
@@ -296,7 +296,7 @@ class Avatars(object):
         h = int(h)
 
         sizes = current_app.config['AVATARS_SIZE_TUPLE']
-        path = os.path.join(current_app.config['AVATARS_UPLOAD_PATH'], filename)
+        path = os.path.join(current_app.config['AVATARS_SAVE_PATH'], filename)
         raw_img = Image.open(path)
 
         base_width = current_app.config['AVATARS_CROP_BASE_WIDTH']
@@ -316,9 +316,9 @@ class Avatars(object):
         filename_m = filename + '_m.png'
         filename_l = filename + '_l.png'
 
-        path_s = os.path.join(current_app.config['AVATARS_UPLOAD_PATH'], filename_s)
-        path_m = os.path.join(current_app.config['AVATARS_UPLOAD_PATH'], filename_m)
-        path_l = os.path.join(current_app.config['AVATARS_UPLOAD_PATH'], filename_l)
+        path_s = os.path.join(current_app.config['AVATARS_SAVE_PATH'], filename_s)
+        path_m = os.path.join(current_app.config['AVATARS_SAVE_PATH'], filename_m)
+        path_l = os.path.join(current_app.config['AVATARS_SAVE_PATH'], filename_l)
 
         avatar_s.save(path_s, optimize=True, quality=85)
         avatar_m.save(path_m, optimize=True, quality=85)
