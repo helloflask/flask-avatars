@@ -140,8 +140,8 @@ class Identicon(object):
         image_draw = ImageDraw.Draw(image)
 
         # Calculate the block width and height.
-        block_width = width / self.cols
-        block_height = height / self.rows
+        block_width = float(width) / self.cols
+        block_height = float(height) / self.rows
 
         # Loop through blocks in matrix, draw rectangles.
         for row, cols in enumerate(matrix):
