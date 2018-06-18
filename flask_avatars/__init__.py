@@ -327,17 +327,17 @@ class Avatars(object):
         return [filename_s, filename_m, filename_l]
 
     @staticmethod
-    def gravatar(**kwargs):
-        return _Avatars.gravatar(**kwargs)
+    def gravatar(*args, **kwargs):
+        return _Avatars.gravatar(*args, **kwargs)
 
     @staticmethod
-    def robohash(**kwargs):
-        return _Avatars.robohash(**kwargs)
+    def robohash(*args, **kwargs):
+        return _Avatars.robohash(*args, **kwargs)
 
     @staticmethod
-    def social_media(**kwargs):
-        return _Avatars.social_media(**kwargs)
+    def social_media(*args, **kwargs):
+        return _Avatars.social_media(*args, **kwargs)
 
     @staticmethod
-    def default(**kwargs):
-        return _Avatars.default(**kwargs)
+    def default(*args, **kwargs):
+        return _Avatars.default(*args, **kwargs)
