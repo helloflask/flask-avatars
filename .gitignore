@@ -170,3 +170,6 @@ fabric.properties
 
 # Sphinx
 docs/_build/
+
+# Temp
+testapp.py

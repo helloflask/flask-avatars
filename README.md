@@ -2,7 +2,7 @@
 All avatar generators in one place.
 
 ## Installation
-```bash
+```
 $ pip install flask-avatars
 ```
 
@@ -113,8 +113,8 @@ The configuration options available were listed below:
 | AVATARS_GRAVATAR_DEFAULT | identicon | Gravatar default avatar type |
 | AVATARS_SAVE_PATH | `None` | The path where avatar save |
 | AVATARS_SIZE_TUPLE | `(30, 60, 150)` | The avatar size tuple in a format of `(small, medium, large)`, used when generate identicon avatar |
-| AVATARS_IDENTICON_COLS | 7 | The cols of identicon avatar |
-| AVATARS_IDENTICON_ROWS | 7 | The ros of identicon avatar |
+| AVATARS_IDENTICON_COLS | 7 | The cols of identicon avatar block |
+| AVATARS_IDENTICON_ROWS | 7 | The ros of identicon avatar block |
 | AVATARS_IDENTICON_BG | `None` | The back ground color of identicaon avatar, pass RGB tuple (for example `(125, 125, 125)`). Default (`None`) to use random color |
 
 
