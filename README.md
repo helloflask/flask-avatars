@@ -128,7 +128,7 @@ The configuration options available were listed below:
 
 ### 0.1.0
 
-Release date: 2018/6/18
+Release date: 2018/6/19
 
 Initialize release.
 
