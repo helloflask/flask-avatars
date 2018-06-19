@@ -226,7 +226,7 @@ class Avatars(object):
 
         blueprint = Blueprint('avatars', __name__,
                               static_folder='static',
-                              static_url_path='/avatars/static')
+                              static_url_path='/avatars' + app.static_url_path)
         app.register_blueprint(blueprint)
 
         # TODO: custom file extension support
