@@ -68,39 +68,41 @@ class _Avatars(object):
         return url_for('avatars.static', filename='default/default_{size}.jpg'.format(size=size))
 
     @staticmethod
-    def jcrop_css(css_url=None):
+    def jcrop_css(css_url=None, version='2.0.4'):
         """Load jcrop css file.
 
         :param css_url: The custom CSS URL.
+        :param version: The version of Jcrop.
         """
         if css_url is None:
-            if current_app.config['AVATARS_SERVE_LOCAL'] or os.getenv('FLASK_ENV') == 'development':
-                css_url = url_for('avatars.static', filename='css/jquery.Jcrop.min.css')
+            if current_app.config['AVATARS_SERVE_LOCAL'] or current_app.config['ENV'] == 'development':
+                css_url = url_for('avatars.static', filename='css/Jcrop.min.css')
             else:
-                css_url = 'http://jcrop-cdn.tapmodo.com/v0.9.12/css/jquery.Jcrop.min.css'
+                css_url = 'https://cdn.jsdelivr.net/gh/tapmodo/Jcrop@%s/css/Jcrop.min.css' % version
         return Markup('<link rel="stylesheet" href="%s">' % css_url)
 
     @staticmethod
-    def jcrop_js(js_url=None, with_jquery=False):
+    def jcrop_js(js_url=None, with_jquery=False, version='2.0.4'):
         """Load jcrop Javascript file.
 
         :param js_url: The custom JavaScript URL.
         :param with_jquery: Include jQuery or not, default to ``False``.
+        :param version: The version of Jcrop.
         """
         if js_url is None:
-            if current_app.config['AVATARS_SERVE_LOCAL'] or os.getenv('FLASK_ENV') == 'development':
-                js_url = url_for('avatars.static', filename='js/jquery.Jcrop.min.js')
+            if current_app.config['AVATARS_SERVE_LOCAL'] or current_app.config['ENV'] == 'development':
+                js_url = url_for('avatars.static', filename='js/Jcrop.min.js')
             else:
-                js_url = 'http://jcrop-cdn.tapmodo.com/v0.9.12/js/jquery.Jcrop.min.js'
+                js_url = 'https://cdn.jsdelivr.net/gh/tapmodo/Jcrop@%s/js/Jcrop.min.js' % version
 
         if with_jquery:
             if current_app.config['AVATARS_SERVE_LOCAL']:
                 jquery = url_for('avatars.static', filename='js/jquery.min.js')
             else:
-                jquery = '<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>'
+                jquery = 'https://cdn.jsdelivr.net/gh/tapmodo/Jcrop@%s/js/jquery.min.js' % version
         else:
             jquery = ''
-        return Markup('''%s\n<script src="%s"></script>
+        return Markup('''<script src="%s"></script>\n<script src="%s"></script>
         ''' % (jquery, js_url))
 
     @staticmethod
