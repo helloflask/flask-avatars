@@ -14,7 +14,7 @@ import unittest
 from PIL import Image
 from flask import Flask, render_template_string, current_app
 
-from flask_avatars import Avatars, _Avatars
+from flask_avatars import Avatars, _Avatars, Identicon
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -171,7 +171,6 @@ class AvatarsTestCase(unittest.TestCase):
 
         os.remove(os.path.join(basedir, 'test.png'))
 
-
     def test_gravatar_mirror(self):
         mirror = self.real_avatars.gravatar(self.email_hash)
         real = self.avatars.gravatar(self.email_hash)
@@ -191,3 +190,20 @@ class AvatarsTestCase(unittest.TestCase):
         mirror = self.real_avatars.default()
         real = self.avatars.default()
         self.assertEqual(mirror, real)
+
+    def test_identicon(self):
+        current_app.config['AVATARS_SAVE_PATH'] = basedir
+
+        avatar = Identicon()
+        filenames = avatar.generate(text='grey')
+        self.assertEqual(filenames[0], 'grey_s.png')
+        self.assertEqual(filenames[1], 'grey_m.png')
+        self.assertEqual(filenames[2], 'grey_l.png')
+
+        self.assertTrue(os.path.exists(os.path.join(current_app.config['AVATARS_SAVE_PATH'], filenames[0])))
+        self.assertTrue(os.path.exists(os.path.join(current_app.config['AVATARS_SAVE_PATH'], filenames[1])))
+        self.assertTrue(os.path.exists(os.path.join(current_app.config['AVATARS_SAVE_PATH'], filenames[2])))
+
+        # comment out these two lines to check the generated image, then delete them manually.
+        for filename in filenames:
+            os.remove(os.path.join(basedir, filename))
