@@ -47,11 +47,17 @@ class AvatarsTestCase(unittest.TestCase):
 
     def test_gravatar(self):
         avatar_url = self.avatars.gravatar(self.email_hash)
-        self.assertEqual(avatar_url, 'https://gravatar.com/avatar/%s?s=100&r=g&d=identicon' % self.email_hash)
+        self.assertIn('https://gravatar.com/avatar/%s' % self.email_hash, avatar_url)
+        self.assertIn('s=100', avatar_url)
+        self.assertIn('r=g', avatar_url)
+        self.assertIn('d=identicon', avatar_url)
 
         avatar_url = self.avatars.gravatar(self.email_hash, size=200, rating='x', default='monsterid',
                                            include_extension=True)
-        self.assertEqual(avatar_url, 'https://gravatar.com/avatar/%s.jpg?s=200&r=x&d=monsterid' % self.email_hash)
+        self.assertIn('https://gravatar.com/avatar/%s' % self.email_hash, avatar_url)
+        self.assertIn('s=200', avatar_url)
+        self.assertIn('r=x', avatar_url)
+        self.assertIn('d=monsterid', avatar_url)
 
     def test_robohash(self):
         avatar_url = self.avatars.robohash(self.email_hash)
