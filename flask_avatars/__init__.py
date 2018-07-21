@@ -102,7 +102,7 @@ class _Avatars(object):
                 js_url = 'https://cdn.jsdelivr.net/npm/jcrop-0.9.12@0.9.12/js/jquery.Jcrop.min.js'
 
         if with_jquery:
-            if current_app.config['AVATARS_SERVE_LOCAL']:
+            if current_app.config['AVATARS_SERVE_LOCAL'] or current_app.config['ENV'] == 'development':
                 jquery = url_for('avatars.static', filename='jcrop/js/jquery.min.js')
             else:
                 jquery = 'https://cdn.jsdelivr.net/npm/jcrop-0.9.12@0.9.12/js/jquery.min.js'

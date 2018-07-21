@@ -82,40 +82,54 @@ class AvatarsTestCase(unittest.TestCase):
 
     def test_load_jcrop(self):
         rv = self.avatars.jcrop_css()
-        self.assertIn('<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tapmodo', rv)
+        self.assertIn('<link rel="stylesheet" href="https://cdn.jsdelivr.net', rv)
 
         rv = self.avatars.jcrop_js()
-        self.assertIn('<script src="https://cdn.jsdelivr.net/gh/tapmodo', rv)
+        self.assertIn('<script src="https://cdn.jsdelivr.net', rv)
+        self.assertIn('jquery.min.js', rv)
+
+        rv = self.avatars.jcrop_js(with_jquery=False)
+        self.assertIn('jquery.Jcrop.min.js', rv)
+        self.assertNotIn('jquery.min.js', rv)
 
     def test_local_resources(self):
         current_app.config['AVATARS_SERVE_LOCAL'] = True
 
-        response = self.client.get('/avatars/static/jcrop/js/Jcrop.min.js')
+        response = self.client.get('/avatars/static/jcrop/js/jquery.Jcrop.min.js')
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.get('/avatars/static/jcrop/css/Jcrop.min.css')
+        response = self.client.get('/avatars/static/jcrop/css/jquery.Jcrop.min.css')
         self.assertEqual(response.status_code, 200)
 
         response = self.client.get('/avatars/static/jcrop/js/jquery.min.js')
         self.assertEqual(response.status_code, 200)
 
         rv = self.avatars.jcrop_css()
-        self.assertIn('/avatars/static/jcrop/css/Jcrop.min.css', rv)
-        self.assertNotIn('<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tapmodo', rv)
+        self.assertIn('/avatars/static/jcrop/css/jquery.Jcrop.min.css', rv)
+        self.assertNotIn('<link rel="stylesheet" href="https://cdn.jsdelivr.net', rv)
 
         rv = self.avatars.jcrop_js()
-        self.assertIn('/avatars/static/jcrop/js/Jcrop.min.js', rv)
-        self.assertNotIn('<script src="https://cdn.jsdelivr.net/gh/tapmodo', rv)
+        self.assertIn('/avatars/static/jcrop/js/jquery.Jcrop.min.js', rv)
+        self.assertIn('/avatars/static/jcrop/js/jquery.min.js', rv)
+        self.assertNotIn('<script src="https://cdn.jsdelivr.net', rv)
+
+        rv = self.avatars.jcrop_js(with_jquery=False)
+        self.assertIn('/avatars/static/jcrop/js/jquery.Jcrop.min.js', rv)
+        self.assertNotIn('jquery.min.js', rv)
 
     def test_local_resources_when_development(self):
         current_app.config['ENV'] = 'development'
         rv = self.avatars.jcrop_css()
-        self.assertIn('/avatars/static/jcrop/css/Jcrop.min.css', rv)
-        self.assertNotIn('<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tapmodo', rv)
+        self.assertIn('/avatars/static/jcrop/css/jquery.Jcrop.min.css', rv)
+        self.assertNotIn('<link rel="stylesheet" href="https://cdn.jsdelivr.net', rv)
 
         rv = self.avatars.jcrop_js()
-        self.assertIn('/avatars/static/jcrop/js/Jcrop.min.js', rv)
-        self.assertNotIn('<script src="https://cdn.jsdelivr.net/gh/tapmodo', rv)
+        self.assertIn('/avatars/static/jcrop/js/jquery.Jcrop.min.js', rv)
+        self.assertIn('/avatars/static/jcrop/js/jquery.min.js', rv)
+
+        rv = self.avatars.jcrop_js(with_jquery=False)
+        self.assertIn('/avatars/static/jcrop/js/jquery.Jcrop.min.js', rv)
+        self.assertNotIn('jquery.min.js', rv)
 
     def test_init_jcrop(self):
         rv = self.avatars.init_jcrop()
@@ -131,10 +145,10 @@ class AvatarsTestCase(unittest.TestCase):
 
     def test_render_template(self):
         rv = render_template_string('''{{ avatars.jcrop_css() }}''')
-        self.assertIn('<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tapmodo', rv)
+        self.assertIn('<link rel="stylesheet" href="https://cdn.jsdelivr.net', rv)
 
         rv = render_template_string('''{{ avatars.jcrop_js() }}''')
-        self.assertIn('<script src="https://cdn.jsdelivr.net/gh/tapmodo', rv)
+        self.assertIn('<script src="https://cdn.jsdelivr.net', rv)
 
         rv = render_template_string('''{{ avatars.init_jcrop() }}''')
         self.assertIn('var jcrop_api,', rv)
