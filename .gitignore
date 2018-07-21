@@ -171,5 +171,10 @@ fabric.properties
 # Sphinx
 docs/_build/
 
-# Temp
-testapp.py
+# Temp files
+examples/crop/avatars/*
+examples/identicon/avatars/*
+
+!examples/crop/avatars/.gitkeep
+!examples/identicon/avatars/.gitkeep
+
