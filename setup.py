@@ -21,7 +21,7 @@ with open(path.join(basedir, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='Flask-Avatars',
-    version='0.1.0',
+    version='0.1.1',
     description='All avatar generators in one place.',
     url='https://github.com/greyli/flask-avatars',
     license='MIT',

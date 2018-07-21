@@ -259,9 +259,13 @@ $ cd basic
 $ flask run
 ```
 If you are busy, here are some screenshots of the examples:
+
 ![Basic](screenshots/basic.png)
+
 ![Identicon](screenshots/identicon.png)
+
 ![Crop](screenshots/crop.png)
+
 ![Crop Done](screenshots/cropped.png)
 
 ## TODO
@@ -272,7 +276,7 @@ If you are busy, here are some screenshots of the examples:
 
 ### 0.1.1
 
-Release date: --
+Release date: 2018/7/21
 
 * Add three example applications.
 * `avatars.jcrop_js()` now default to include jQuery (`with_jquery=True`).
