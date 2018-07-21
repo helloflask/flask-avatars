@@ -76,38 +76,36 @@ class _Avatars(object):
         return url_for('avatars.static', filename='default/default_{size}.jpg'.format(size=size))
 
     @staticmethod
-    def jcrop_css(css_url=None, version='2.0.4'):
+    def jcrop_css(css_url=None):
         """Load jcrop css file.
 
         :param css_url: The custom CSS URL.
-        :param version: The version of Jcrop.
         """
         if css_url is None:
             if current_app.config['AVATARS_SERVE_LOCAL'] or current_app.config['ENV'] == 'development':
-                css_url = url_for('avatars.static', filename='jcrop/css/Jcrop.min.css')
+                css_url = url_for('avatars.static', filename='jcrop/css/jquery.Jcrop.min.css')
             else:
-                css_url = 'https://cdn.jsdelivr.net/gh/tapmodo/Jcrop@%s/css/Jcrop.min.css' % version
+                css_url = 'https://cdn.jsdelivr.net/npm/jcrop-0.9.12@0.9.12/css/jquery.Jcrop.min.css'
         return Markup('<link rel="stylesheet" href="%s">' % css_url)
 
     @staticmethod
-    def jcrop_js(js_url=None, with_jquery=False, version='2.0.4'):
+    def jcrop_js(js_url=None, with_jquery=False):
         """Load jcrop Javascript file.
 
         :param js_url: The custom JavaScript URL.
         :param with_jquery: Include jQuery or not, default to ``False``.
-        :param version: The version of Jcrop.
         """
         if js_url is None:
             if current_app.config['AVATARS_SERVE_LOCAL'] or current_app.config['ENV'] == 'development':
-                js_url = url_for('avatars.static', filename='jcrop/js/Jcrop.min.js')
+                js_url = url_for('avatars.static', filename='jcrop/js/jquery.Jcrop.min.js')
             else:
-                js_url = 'https://cdn.jsdelivr.net/gh/tapmodo/Jcrop@%s/js/Jcrop.min.js' % version
+                js_url = 'https://cdn.jsdelivr.net/npm/jcrop-0.9.12@0.9.12/js/jquery.Jcrop.min.js'
 
         if with_jquery:
             if current_app.config['AVATARS_SERVE_LOCAL']:
                 jquery = url_for('avatars.static', filename='jcrop/js/jquery.min.js')
             else:
-                jquery = 'https://cdn.jsdelivr.net/gh/tapmodo/Jcrop@%s/js/jquery.min.js' % version
+                jquery = 'https://cdn.jsdelivr.net/npm/jcrop-0.9.12@0.9.12/js/jquery.min.js'
         else:
             jquery = ''
         return Markup('''<script src="%s"></script>\n<script src="%s"></script>
