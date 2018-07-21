@@ -32,7 +32,7 @@ setup(
     platforms='any',
     packages=['flask_avatars'],
     zip_safe=False,
-    # test_suite='test_flask_avatars',
+    test_suite='test_flask_avatars',
     include_package_data=True,
     install_requires=[
         'Flask',
