@@ -105,10 +105,10 @@ class _Avatars(object):
             if current_app.config['AVATARS_SERVE_LOCAL'] or current_app.config['ENV'] == 'development':
                 jquery = url_for('avatars.static', filename='jcrop/js/jquery.min.js')
             else:
-                jquery = 'https://cdn.jsdelivr.net/npm/jcrop-0.9.12@0.9.12/js/jquery.min.js'
+                jquery = '<script src="https://cdn.jsdelivr.net/npm/jcrop-0.9.12@0.9.12/js/jquery.min.js"></script>'
         else:
             jquery = ''
-        return Markup('''<script src="%s"></script>\n<script src="%s"></script>
+        return Markup('''%s\n<script src="%s"></script>
         ''' % (jquery, js_url))
 
     @staticmethod
