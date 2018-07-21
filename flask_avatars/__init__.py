@@ -125,7 +125,7 @@ class _Avatars(object):
         if endpoint is None or filename is None:
             url = url_for('avatars.static', filename='default/default_l.jpg')
         else:
-            url = url_for(endpoint, filename=filename, size='raw')
+            url = url_for(endpoint, filename=filename)
         return Markup('<img src="%s" id="crop-box" style="max-width: %dpx; display: block;">' % (url, crop_size))
 
     @staticmethod
@@ -141,7 +141,7 @@ class _Avatars(object):
         if endpoint is None or filename is None:
             url = url_for('avatars.static', filename='default/default_l.jpg')
         else:
-            url = url_for(endpoint, filename=filename, size='raw')
+            url = url_for(endpoint, filename=filename)
         return Markup('''
         <div id="preview-box">
         <div class="preview-box" style="width: %dpx; height: %dpx; overflow: hidden;">
