@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask-Avatars Demo</title>
+</head>
+<body>
+<h1>Flask-Avatars Basic Demo</h1>
+<h2>avatars.default()</h2>
+<ul>
+    <li> size: default to 'm', one of 's', 'm', 'l'</li>
+</ul>
+<p>{% raw %}{{ avatars.default() }}{% endraw %}: <img src="{{ avatars.default() }}"></p>
+<p>{% raw %}{{ avatars.default(size='l') }}{% endraw %}: <img src="{{ avatars.default(size='l') }}"></p>
+<p>{% raw %}{{ avatars.default(size='s') }}{% endraw %}: <img src="{{ avatars.default(size='s') }}"></p>
+
+<h2>avatars.gravatar(hash)</h2>
+<ul>
+    <li>size: default to 100
+    </li>
+    <li>rating: default to 'g'
+    </li>
+    <li>default: default to 'identicon'
+    </li>
+</ul>
+<p>{% raw %}{{ avatars.gravatar(email_hash) }}{% endraw %}: <img src="{{ avatars.gravatar(email_hash) }}"></p>
+<p>{% raw %}{{ avatars.gravatar(email_hash, size='200', default='monsterid') }}{% endraw %}: <img
+        src="{{ avatars.gravatar(email_hash, size='200', default='monsterid') }}"></p>
+<h2>avatars.robohash(text)</h2>
+<ul>
+    <li>size: default to 200
+    </li>
+</ul>
+<p>{% raw %}{{ avatars.robohash('jack') }}{% endraw %}: <img src="{{ avatars.robohash('jack') }}"></p>
+<p>{% raw %}{{ avatars.robohash('peter', size='200') }}{% endraw %}: <img
+        src="{{ avatars.robohash('peter', size='50') }}"></p>
+
+<h2>avatars.social_media(username)</h2>
+<ul>
+    <li>platform: default to 'twitter', one of twitter, facebook, instagram, gravatar
+    </li>
+    <li>size: default to 'medium', one of 'small', 'medium', 'large'
+    </li>
+</ul>
+<p>{% raw %}{{ avatars.social_media('realDonaldTrump') }}{% endraw %}: <img
+        src="{{ avatars.social_media('realDonaldTrump') }}"></p>
+<p>{% raw %}{{ avatars.social_media('stefsunyanzi', platform='instagram', size='large') }}{% endraw %}: <img
+        src="{{ avatars.social_media('stefsunyanzi', platform='instagram', size='large') }}"></p>
+</body>
+</html>
