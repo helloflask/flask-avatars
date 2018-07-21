@@ -9,6 +9,7 @@
     :license: MIT, see LICENSE for more details.
 """
 import os
+import uuid
 
 from flask import Flask, render_template, url_for, send_from_directory
 from flask_avatars import Avatars, Identicon
@@ -30,14 +31,9 @@ def get_avatar(filename):
 @app.route('/')
 def index():
     avatar = Identicon()
-    filenames = avatar.generate(text='grey')
+    random_text = uuid.uuid4().hex
+    filenames = avatar.generate(text=random_text)
     url_s = url_for('get_avatar', filename=filenames[0])
     url_m = url_for('get_avatar', filename=filenames[1])
     url_l = url_for('get_avatar', filename=filenames[2])
-
-    filenames = avatar.generate(text='peter')
-    url_s2 = url_for('get_avatar', filename=filenames[0])
-    url_m2 = url_for('get_avatar', filename=filenames[1])
-    url_l2 = url_for('get_avatar', filename=filenames[2])
-    return render_template('index.html', url_s=url_s, url_m=url_m, url_l=url_l,
-                           url_s2=url_s2, url_m2=url_m2, url_l2=url_l2)
+    return render_template('index.html', url_s=url_s, url_m=url_m, url_l=url_l)
