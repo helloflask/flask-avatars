@@ -89,7 +89,7 @@ class _Avatars(object):
         return Markup('<link rel="stylesheet" href="%s">' % css_url)
 
     @staticmethod
-    def jcrop_js(js_url=None, with_jquery=False):
+    def jcrop_js(js_url=None, with_jquery=True):
         """Load jcrop Javascript file.
 
         :param js_url: The custom JavaScript URL.
