@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """ 
     crop.app
-    ~~~~
+    ~~~~~~~~
     Example application that demonstrate how to crop avatar.
 
     :author: Grey Li <withlihui@gmail.com>
