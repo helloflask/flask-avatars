@@ -107,6 +107,16 @@ class AvatarsTestCase(unittest.TestCase):
         self.assertIn('/avatars/static/jcrop/js/Jcrop.min.js', rv)
         self.assertNotIn('<script src="https://cdn.jsdelivr.net/gh/tapmodo', rv)
 
+    def test_local_resources_when_development(self):
+        current_app.config['ENV'] = 'development'
+        rv = self.avatars.jcrop_css()
+        self.assertIn('/avatars/static/jcrop/css/Jcrop.min.css', rv)
+        self.assertNotIn('<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tapmodo', rv)
+
+        rv = self.avatars.jcrop_js()
+        self.assertIn('/avatars/static/jcrop/js/Jcrop.min.js', rv)
+        self.assertNotIn('<script src="https://cdn.jsdelivr.net/gh/tapmodo', rv)
+
     def test_init_jcrop(self):
         rv = self.avatars.init_jcrop()
         self.assertIn('var jcrop_api,', rv)
