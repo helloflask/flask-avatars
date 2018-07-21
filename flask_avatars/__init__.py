@@ -8,7 +8,11 @@
     :license: MIT, see LICENSE for more details.
 """
 import os
-import urllib
+try:
+    from urllib.parse import urlencode
+except ImportError:
+    from urllib import urlencode
+
 from uuid import uuid4
 
 import PIL
@@ -39,7 +43,7 @@ class _Avatars(object):
             hash += '.jpg'
 
         default = default or current_app.config['AVATARS_GRAVATAR_DEFAULT']
-        query_string = urllib.urlencode({'s': int(size), 'r': rating, 'd': default})
+        query_string = urlencode({'s': int(size), 'r': rating, 'd': default})
 
         if force_default:
             query_string += '&q=y'
