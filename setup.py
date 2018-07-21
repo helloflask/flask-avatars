@@ -3,6 +3,8 @@
     Flask-Avatars
     ~~~~~~~~~~~~~~
     All avatar generators in one place.
+
+    :author: Grey Li <withlihui@gmail.com>
     :copyright: (c) 2018 by Grey Li.
     :license: MIT, see LICENSE for more details.
 """

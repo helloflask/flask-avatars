@@ -1,4 +1,12 @@
 # -*- coding: utf-8 -*-
+"""
+    flask_avatars
+    ~~~~~~~~~~~~~
+
+    :author: Grey Li <withlihui@gmail.com>
+    :copyright: © 2018 Grey Li
+    :license: MIT, see LICENSE for more details.
+"""
 import os
 import urllib
 from uuid import uuid4

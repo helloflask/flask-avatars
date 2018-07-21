@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """ 
     test_flask_avatars
-    -------------------
+    ~~~~~~~~~~~~~~~~~~
 
     :author: Grey Li <withlihui@gmail.com>
     :copyright: © 2018 Grey Li

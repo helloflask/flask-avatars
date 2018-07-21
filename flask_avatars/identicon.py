@@ -3,7 +3,13 @@
     flask_avatars.identicon
     ~~~~~~~~~~~~~~~~~~~~~~~~
     Generate identicon image.
-    Based on randomavatar(https://pypi.org/project/randomavatar/).
+
+    :author: Grey Li <withlihui@gmail.com>
+    :copyright: © 2018 Grey Li
+    :license: MIT, see LICENSE for more details.
+
+    Ths file was based on randomavatar(https://pypi.org/project/randomavatar/) by Richard O'Dwyer and
+    modified under it's Creative Commons Attribution-Noncommercial-Share Alike license © Richard O'Dwyer.
 """
 import hashlib
 import math
