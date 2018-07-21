@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-""" 
+"""
     basic.app
     ~~~~~~~~~~
     Example application that demonstrate basic use.
@@ -21,4 +21,3 @@ avatars = Avatars(app)
 def index():
     email_hash = hashlib.md5('test@helloflask.com'.lower().encode('utf-8')).hexdigest()
     return render_template('index.html', email_hash=email_hash)
-

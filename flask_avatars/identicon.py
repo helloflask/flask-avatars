@@ -88,7 +88,8 @@ class Identicon(object):
         """
             Create a pastel colour hex colour string
         """
-        r = lambda: random.randint(0, 128) + lighten
+        def r():
+            return random.randint(0, 128) + lighten
         return r(), r(), r()  # return rgb values as a tuple
 
     def _luminance(self, rgb):
@@ -216,6 +217,5 @@ class Identicon(object):
                 width=int(size),
                 height=int(size),
                 pad=int(size * 0.1))
-            self.save(image_byte_array,
-                        save_location=os.path.join(path, '%s_%s.png' % (text, suffix[size])))
+            self.save(image_byte_array, save_location=os.path.join(path, '%s_%s.png' % (text, suffix[size])))
         return [text + '_s.png', text + '_m.png', text + '_l.png']

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-""" 
+"""
     identicon.app
     ~~~~~~~~~~~~~
     Example application that demonstrate how to generate identicon.

@@ -14,7 +14,7 @@ from uuid import uuid4
 import PIL
 from PIL import Image
 from flask import current_app, Blueprint, url_for, Markup
-from .identicon import Identicon
+from .identicon import Identicon  # noqa
 
 
 class _Avatars(object):
@@ -64,7 +64,8 @@ class _Avatars(object):
         :param platform: One of facebook, instagram, twitter, gravatar.
         :param size: The size of avatar, one of small, medium and large.
         """
-        return 'https://avatars.io/{platform}/{username}/{size}'.format(platform=platform, username=username, size=size)
+        return 'https://avatars.io/{platform}/{username}/{size}'.format(
+            platform=platform, username=username, size=size)
 
     @staticmethod
     def default(size='m'):
@@ -133,8 +134,7 @@ class _Avatars(object):
         :param endpoint: The endpoint of view function that serve avatar image file.
         :param filename: The filename of the image that need to be crop.
         """
-        preview_size = current_app.config['AVATARS_CROP_PREVIEW_SIZE'] \
-                       or current_app.config['AVATARS_SIZE_TUPLE'][2]
+        preview_size = current_app.config['AVATARS_CROP_PREVIEW_SIZE'] or current_app.config['AVATARS_SIZE_TUPLE'][2]
 
         if endpoint is None or filename is None:
             url = url_for('avatars.static', filename='default/default_l.jpg')
@@ -155,8 +155,7 @@ class _Avatars(object):
         """
         init_x = current_app.config['AVATARS_CROP_INIT_POS'][0]
         init_y = current_app.config['AVATARS_CROP_INIT_POS'][1]
-        init_size = current_app.config['AVATARS_CROP_INIT_SIZE'] \
-                    or current_app.config['AVATARS_SIZE_TUPLE'][2]
+        init_size = current_app.config['AVATARS_CROP_INIT_SIZE'] or current_app.config['AVATARS_SIZE_TUPLE'][2]
 
         if current_app.config['AVATARS_CROP_MIN_SIZE']:
             min_size = min_size or current_app.config['AVATARS_SIZE_TUPLE'][2]
