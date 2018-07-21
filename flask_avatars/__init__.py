@@ -76,7 +76,7 @@ class _Avatars(object):
         """
         if css_url is None:
             if current_app.config['AVATARS_SERVE_LOCAL'] or current_app.config['ENV'] == 'development':
-                css_url = url_for('avatars.static', filename='css/Jcrop.min.css')
+                css_url = url_for('avatars.static', filename='jcrop/css/Jcrop.min.css')
             else:
                 css_url = 'https://cdn.jsdelivr.net/gh/tapmodo/Jcrop@%s/css/Jcrop.min.css' % version
         return Markup('<link rel="stylesheet" href="%s">' % css_url)
@@ -91,13 +91,13 @@ class _Avatars(object):
         """
         if js_url is None:
             if current_app.config['AVATARS_SERVE_LOCAL'] or current_app.config['ENV'] == 'development':
-                js_url = url_for('avatars.static', filename='js/Jcrop.min.js')
+                js_url = url_for('avatars.static', filename='jcrop/js/Jcrop.min.js')
             else:
                 js_url = 'https://cdn.jsdelivr.net/gh/tapmodo/Jcrop@%s/js/Jcrop.min.js' % version
 
         if with_jquery:
             if current_app.config['AVATARS_SERVE_LOCAL']:
-                jquery = url_for('avatars.static', filename='js/jquery.min.js')
+                jquery = url_for('avatars.static', filename='jcrop/js/jquery.min.js')
             else:
                 jquery = 'https://cdn.jsdelivr.net/gh/tapmodo/Jcrop@%s/js/jquery.min.js' % version
         else:
