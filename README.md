@@ -274,7 +274,7 @@ If you are busy, here are some screenshots of the examples:
 
 ## ChangeLog
 
-### 0.1.1
+### 0.2.0
 
 Release date: 2018/7/21
 
