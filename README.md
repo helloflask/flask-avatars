@@ -255,7 +255,7 @@ def crop():
     return render_template('crop.html')
 ```
 
-`avatars.crop_avatar()` return the crop files name in a tuple `(filename_s, filename_m, filename_;)`,
+`avatars.crop_avatar()` return the crop files name in a tuple `(filename_s, filename_m, filename_l)`,
 you may need to store it in database.
 
 ![Crop Done](screenshots/cropped.png)
