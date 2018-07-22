@@ -56,6 +56,7 @@ import hashlib
 
 avatar_hash = hashlib.md5(my_email.lower().encode('utf-8')).hexdigest()
 ```
+![gravatar demo](screenshots/gravatar.png)
 
 ### Robohash
 
@@ -64,6 +65,9 @@ avatar_hash = hashlib.md5(my_email.lower().encode('utf-8')).hexdigest()
 ```html
 <img src="{{ avatars.robohash(some_text) }}">
 ```
+
+![robohash demo](screenshots/robohash.png)
+
 
 ### Social Media Avatar by Avatars.io
 
@@ -79,6 +83,9 @@ Default to use Twitter, use `platform` to change it:
 <img src="{{ avatars.social_media(username, platform='facebook') }}">
 ```
 
+![avatars.io demo](screenshots/avatars.io.png)
+
+
 ### Default Avatar
 
 Flask-Avatars provide a default avatar with three size, use `avatars.default()`
@@ -90,6 +97,9 @@ You can use `size` to change size (one of `s`, `m` and `l`), for example:
 ```html
 <img src="{{ avatars.default(size='s') }}">
 ```
+
+![default demo](screenshots/default.png)
+
 
 ### Identicon Generatation
 Flask-Avatars provide a `Identicon` class to generate [identicon](https://www.wikiwand.com/en/Identicon)
@@ -124,6 +134,8 @@ from flask import send_form_directory, current_app
 def get_avatar(filename):
     return send_from_directory(current_app.config['AVATARS_SAVE_PATH'], filename)
 ```
+
+![identicon demo](screenshots/identicon.png)
 
 ## Avatar Crop
 Flask-Avatars add support avatar crop based on [Jcrop](https://github.com/tapmodo/Jcrop).
@@ -221,6 +233,9 @@ class CropAvatarForm(FlaskForm):
     submit = SubmitField('Crop')
 ```
 
+![Crop](screenshots/crop.png)
+
+
 ### Step 3: Save
 When the use click the crop button, we can handle the real crop work behind the
 screen:
@@ -243,6 +258,8 @@ def crop():
 `avatars.crop_avatar()` return the crop files name in a tuple `(filename_s, filename_m, filename_;)`,
 you may need to store it in database.
 
+![Crop Done](screenshots/cropped.png)
+
 ## Example Applications
 
 Currently, we have three examples:
@@ -258,15 +275,7 @@ $ pip install flask flask-avatars
 $ cd basic
 $ flask run
 ```
-If you are busy, here are some screenshots of the examples:
 
-![Basic](screenshots/basic.png)
-
-![Identicon](screenshots/identicon.png)
-
-![Crop](screenshots/crop.png)
-
-![Crop Done](screenshots/cropped.png)
 
 ## TODO
 - [ ] Fix English grammar error at everywhere :(
