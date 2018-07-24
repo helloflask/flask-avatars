@@ -30,7 +30,7 @@ class _Avatars(object):
             import hashlib
             avatar_hash = hashlib.md5(email.lower().encode('utf-8')).hexdigest()
 
-        Visit `https://en.gravatar.com/site/implement/images/`_ for more information.
+        Visit https://en.gravatar.com/site/implement/images/ for more information.
 
         :param hash: The email hash used to generate avatar URL.
         :param size: The size of the avatar, default to 100 pixel.
@@ -52,7 +52,7 @@ class _Avatars(object):
     @staticmethod
     def robohash(text, size=200):
         """Pass text, return Robohash-style avatar (robot).
-        Visit `https://robohash.org/`_ for more information.
+        Visit https://robohash.org/ for more information.
 
         :param text: The text used to generate avatar.
         :param size: The size of the avatar, default to 200 pixel.
@@ -62,7 +62,7 @@ class _Avatars(object):
     @staticmethod
     def social_media(username, platform='twitter', size='medium'):
         """Return avatar URL at social media.
-        Visit `https://avatars.io`_ for more information.
+        Visit https://avatars.io for more information.
 
         :param username: The username of the social media.
         :param platform: One of facebook, instagram, twitter, gravatar.
