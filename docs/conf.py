@@ -144,7 +144,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'flask-share', u'Flask-Share Documentation',
+    (master_doc, 'flask-avatars', u'Flask-Avatars Documentation',
      [author], 1)
 ]
 

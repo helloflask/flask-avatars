@@ -9,7 +9,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=.
 set BUILDDIR=_build
-set SPHINXPROJ=Flask-Share
+set SPHINXPROJ=Flask-Avatars
 
 if "%1" == "" goto help
 
