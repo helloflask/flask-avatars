@@ -1,8 +1,17 @@
 # Flask-Avatars
-All avatar generators in one place.
+All avatar generators in one place:
 
-* Documentation: 
-* PyPI:
+* Default avatar
+* Gravatar
+* Robohash
+* Social media avatar
+* Identicon generation
+* Avatar crop
+
+## Links
+
+* Documentation: https://flask-avatars.readthedocs.io/en/latest/
+* PyPI: https://pypi.org/project/Flask-Avatars/
 
 ## TODO
 - [ ] Fix English grammar error at everywhere :(
