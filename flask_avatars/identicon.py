@@ -29,7 +29,8 @@ class Identicon(object):
 
         :param rows: The row of pixels in avatar.
         :param columns: The column of pixels in avatar.
-        :param bg_color: Backgroud color, pass RGB tuple, for example: (125, 125, 125). Set it to ``None`` to use random color.
+        :param bg_color: Backgroud color, pass RGB tuple, for example: (125, 125, 125).
+               Set it to ``None`` to use random color.
         """
 
         self.rows = rows or current_app.config['AVATARS_IDENTICON_ROWS']
