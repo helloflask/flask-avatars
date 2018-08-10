@@ -87,7 +87,7 @@ class _Avatars(object):
         :param css_url: The custom CSS URL.
         """
         if css_url is None:
-            if current_app.config['AVATARS_SERVE_LOCAL'] or current_app.config['ENV'] == 'development':
+            if current_app.config['AVATARS_SERVE_LOCAL']:
                 css_url = url_for('avatars.static', filename='jcrop/css/jquery.Jcrop.min.css')
             else:
                 css_url = 'https://cdn.jsdelivr.net/npm/jcrop-0.9.12@0.9.12/css/jquery.Jcrop.min.css'
@@ -100,14 +100,16 @@ class _Avatars(object):
         :param js_url: The custom JavaScript URL.
         :param with_jquery: Include jQuery or not, default to ``True``.
         """
+        serve_local = current_app.config['AVATARS_SERVE_LOCAL']
+
         if js_url is None:
-            if current_app.config['AVATARS_SERVE_LOCAL'] or current_app.config['ENV'] == 'development':
+            if serve_local:
                 js_url = url_for('avatars.static', filename='jcrop/js/jquery.Jcrop.min.js')
             else:
                 js_url = 'https://cdn.jsdelivr.net/npm/jcrop-0.9.12@0.9.12/js/jquery.Jcrop.min.js'
 
         if with_jquery:
-            if current_app.config['AVATARS_SERVE_LOCAL'] or current_app.config['ENV'] == 'development':
+            if serve_local:
                 jquery = '<script src="%s"></script>' % url_for('avatars.static', filename='jcrop/js/jquery.min.js')
             else:
                 jquery = '<script src="https://cdn.jsdelivr.net/npm/jcrop-0.9.12@0.9.12/js/jquery.min.js"></script>'
