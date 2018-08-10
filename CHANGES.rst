@@ -4,9 +4,10 @@ ChangeLog
 0.2.1
 ~~~~~
 
-Release date: --
+Release date: 2018/8/10
 
 - Add a proper documentation.
+- Built-in resources behaviour will not based on ``FLASK_ENV``.
 
 
 0.2.0
