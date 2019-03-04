@@ -13,9 +13,6 @@ All avatar generators in one place:
 * Documentation: https://flask-avatars.readthedocs.io/en/latest/
 * PyPI: https://pypi.org/project/Flask-Avatars/
 
-## TODO
-- [ ] Fix English grammar error at everywhere :(
-
 ## License
 
 This project is licensed under the MIT License (see the
