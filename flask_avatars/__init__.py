@@ -242,6 +242,8 @@ class Avatars(object):
                               static_url_path='/avatars' + app.static_url_path)
         app.register_blueprint(blueprint)
 
+        self.root_path = blueprint.root_path
+
         # TODO: custom file extension support
         # settings
         app.config.setdefault('AVATARS_GRAVATAR_DEFAULT', 'identicon')
@@ -309,7 +311,14 @@ class Avatars(object):
         h = int(h)
 
         sizes = current_app.config['AVATARS_SIZE_TUPLE']
-        path = os.path.join(current_app.config['AVATARS_SAVE_PATH'], filename)
+
+        if not filename:
+            path = os.path.join(self.root_path, 'static/default/default_l.jpg')
+        else:
+            path = os.path.join(current_app.config['AVATARS_SAVE_PATH'], filename)
+
+        print(path)
+
         raw_img = Image.open(path)
 
         base_width = current_app.config['AVATARS_CROP_BASE_WIDTH']
