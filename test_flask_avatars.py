@@ -187,6 +187,24 @@ class AvatarsTestCase(unittest.TestCase):
 
         os.remove(os.path.join(basedir, 'test.png'))
 
+    def test_crop_default_avatar(self):
+        current_app.config['AVATARS_SAVE_PATH'] = basedir
+        filenames = self.real_avatars.crop_avatar(None, x=1, y=1, w=100, h=100)
+        self.assertIn('_s.png', filenames[0])
+        self.assertIn('_m.png', filenames[1])
+        self.assertIn('_l.png', filenames[2])
+
+        self.assertTrue(os.path.exists(os.path.join(current_app.config['AVATARS_SAVE_PATH'], filenames[0])))
+        self.assertTrue(os.path.exists(os.path.join(current_app.config['AVATARS_SAVE_PATH'], filenames[1])))
+        self.assertTrue(os.path.exists(os.path.join(current_app.config['AVATARS_SAVE_PATH'], filenames[2])))
+
+        file_s = Image.open(os.path.join(current_app.config['AVATARS_SAVE_PATH'], filenames[0]))
+        self.assertEqual(file_s.size[0], current_app.config['AVATARS_SIZE_TUPLE'][0])
+        file_s.close()
+
+        for filename in filenames:
+            os.remove(os.path.join(basedir, filename))
+
     def test_gravatar_mirror(self):
         mirror = self.real_avatars.gravatar(self.email_hash)
         real = self.avatars.gravatar(self.email_hash)
