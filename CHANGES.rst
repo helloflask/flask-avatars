@@ -1,6 +1,14 @@
 ChangeLog
 ---------
 
+0.2.2
+~~~~~
+
+Release date: 2019/3/4
+
+- Fix ``TypeError`` when crop avatar without upload the raw image (use default avatar).
+
+
 0.2.1
 ~~~~~
 
