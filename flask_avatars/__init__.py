@@ -296,7 +296,7 @@ class Avatars(object):
         image.save(os.path.join(path, filename))
         return filename
 
-    def crop_avatar(self, filename, x, y, w, h):
+    def crop_avatar(self, filename, x, y, w, h, uuid_filename = True):
         """Crop avatar with given size, return a list of file name: [filename_s, filename_m, filename_l].
 
         :param filename: The raw image's filename.
@@ -317,8 +317,6 @@ class Avatars(object):
         else:
             path = os.path.join(current_app.config['AVATARS_SAVE_PATH'], filename)
 
-        print(path)
-
         raw_img = Image.open(path)
 
         base_width = current_app.config['AVATARS_CROP_BASE_WIDTH']
@@ -328,7 +326,8 @@ class Avatars(object):
 
         cropped_img = raw_img.crop((x, y, x + w, y + h))
 
-        filename = uuid4().hex
+        if uuid_filename:
+            filename = uuid4().hex
 
         avatar_s = self.resize_avatar(cropped_img, base_width=sizes[0])
         avatar_m = self.resize_avatar(cropped_img, base_width=sizes[1])
