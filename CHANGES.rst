@@ -1,6 +1,14 @@
 ChangeLog
 ---------
 
+0.2.3
+~~~~~
+
+Release date: 2023/11/28
+
+- Fix the compatibility issue with Flask ``3.x``.
+
+
 0.2.2
 ~~~~~
 

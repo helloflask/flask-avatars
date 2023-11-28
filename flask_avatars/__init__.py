@@ -15,9 +15,9 @@ except ImportError:
 
 from uuid import uuid4
 
-import PIL
 from PIL import Image
-from flask import current_app, Blueprint, url_for, Markup
+from flask import current_app, Blueprint, url_for
+from markupsafe import Markup
 from .identicon import Identicon  # noqa
 
 
@@ -283,7 +283,7 @@ class Avatars(object):
         """
         w_percent = (base_width / float(img.size[0]))
         h_size = int((float(img.size[1]) * float(w_percent)))
-        img = img.resize((base_width, h_size), PIL.Image.ANTIALIAS)
+        img = img.resize((base_width, h_size), Image.BICUBIC)
         return img
 
     def save_avatar(self, image):
